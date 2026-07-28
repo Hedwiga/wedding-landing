@@ -228,14 +228,14 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
                     : 'Шкода, що не зможеш. Будемо сумувати! 🌸'}
                 </Typography>
                 {rsvp === 'yes' && (!nickname || !hasSkin) && (
-                  <Typography sx={{ fontSize: { xs: '0.4rem', md: '0.45rem' }, color: `${GOLD}99`, lineHeight: 2, mb: 1 }}>
+                  <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.55rem' }, color: `${GOLD}99`, lineHeight: 2, mb: 1 }}>
                     Не забудь вказати нікнейм і завантажити скін нижче 👇
                   </Typography>
                 )}
                 <Button
                   variant="text"
                   onClick={handleChange}
-                  sx={{ fontSize: { xs: '0.35rem', md: '0.42rem' }, color: `${GOLD}66`, '&:hover': { color: GOLD }, borderRadius: 0 }}
+                  sx={{ fontSize: { xs: '0.5rem', md: '0.5rem' }, color: `${GOLD}66`, '&:hover': { color: GOLD }, borderRadius: 0 }}
                 >
                   Змінити відповідь
                 </Button>
