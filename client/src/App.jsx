@@ -46,8 +46,9 @@ function App() {
           pt: { xs: 6, md: 10 },
           '&::before': {
             content: '""',
-            position: 'absolute',
+            position: 'fixed',
             inset: 0,
+            zIndex: -1,
             backgroundImage: `url(${background})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
