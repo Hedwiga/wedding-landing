@@ -8,6 +8,7 @@ import ServerCard from './components/ServerCard';
 import DressCodeCard from './components/DressCodeCard';
 import WeddingDateCard from './components/WeddingDateCard';
 import MinecraftProfileCard from './components/MinecraftProfileCard';
+import InvitationCard from './components/InvitationCard';
 import SorryPage from './pages/SorryPage';
 import { GOLD } from './theme/colors';
 
@@ -73,20 +74,24 @@ function App() {
               <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.7rem' }, color: GOLD, lineHeight: 2.5, mb: 6 }}>
                 {`запрошують ${guest.firstName}`}
               </Typography>
-              <ServerCard server={guest.content.minecraftServer} />
-              <DressCodeCard />
+              <InvitationCard />
               <WeddingDateCard
                 guestId={guestId}
                 initialAttending={guest.attending}
                 weddingDateTime={guest.content.weddingDateTime}
                 weddingTimezone={guest.content.weddingTimezone}
               />
+
               {guest.attending && (
-                <MinecraftProfileCard
-                  guestId={guestId}
-                  initialNickname={guest.nickname}
-                  initialHasSkin={guest.hasSkin}
-                />
+                <>
+                  <MinecraftProfileCard
+                    guestId={guestId}
+                    initialNickname={guest.nickname}
+                    initialHasSkin={guest.hasSkin}
+                  />
+                  <DressCodeCard />
+                  <ServerCard server={guest.content.minecraftServer} />
+                </>
               )}
             </>
           )}

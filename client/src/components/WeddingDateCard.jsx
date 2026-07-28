@@ -43,6 +43,9 @@ function CountdownUnit({ value, label }) {
         px: { xs: 1, md: 2 },
         py: 1,
         mb: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
         <Typography sx={{ fontSize: { xs: '1rem', md: '1.4rem' }, color: GREEN, lineHeight: 1.2 }}>
           {String(value).padStart(2, '0')}
@@ -50,6 +53,23 @@ function CountdownUnit({ value, label }) {
       </Box>
       <Typography sx={{ fontSize: { xs: '0.35rem', md: '0.42rem' }, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>
         {label}
+      </Typography>
+    </Box>
+  );
+}
+
+function CountdownSeparator() {
+  return (
+    <Box sx={{
+      border: '2px solid transparent',
+      py: 1,
+      mb: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Typography sx={{ fontSize: { xs: '1rem', md: '1.4rem' }, color: 'rgba(255,255,255,0.3)', lineHeight: 1.2 }}>
+        :
       </Typography>
     </Box>
   );
@@ -128,13 +148,13 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
             <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.5rem' }, color: `${GOLD}99`, textTransform: 'uppercase', letterSpacing: 1 }}>
               До урочистості залишилось
             </Typography>
-            <Stack direction="row" spacing={{ xs: 1, md: 2 }} justifyContent="center">
+            <Stack direction="row" spacing={{ xs: 0.5, md: 1 }} justifyContent="center">
               <CountdownUnit value={timeLeft.days}    label="днів" />
-              <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: '1.2rem', alignSelf: 'flex-start', mt: '6px' }}>:</Typography>
+              <CountdownSeparator />
               <CountdownUnit value={timeLeft.hours}   label="годин" />
-              <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: '1.2rem', alignSelf: 'flex-start', mt: '6px' }}>:</Typography>
+              <CountdownSeparator />
               <CountdownUnit value={timeLeft.minutes} label="хвилин" />
-              <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: '1.2rem', alignSelf: 'flex-start', mt: '6px' }}>:</Typography>
+              <CountdownSeparator />
               <CountdownUnit value={timeLeft.seconds} label="секунд" />
             </Stack>
           </>

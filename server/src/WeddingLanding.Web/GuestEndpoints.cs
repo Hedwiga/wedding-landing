@@ -91,6 +91,25 @@ public static class GuestEndpoints
     private static async Task<GuestProfileResponse> ToResponseAsync(GuestProfile profile, string link, IGuestStore store, WeddingContent content, CancellationToken ct)
     {
         var hasSkin = await store.HasSkinAsync(link, ct);
-        return new GuestProfileResponse(profile.FirstName, profile.Nickname, profile.Attending, hasSkin, content);
+        return new GuestProfileResponse(profile.FirstName, profile.Nickname, profile.Attending, hasSkin, WithGatedServerIp(content));
+    }
+
+    private static WeddingContent WithGatedServerIp(WeddingContent content)
+    {
+        if (ShouldRevealServerIp(content)) return content;
+
+        return new WeddingContent
+        {
+            CoupleNames = content.CoupleNames,
+            WeddingDateTime = content.WeddingDateTime,
+            WeddingTimezone = content.WeddingTimezone,
+            MinecraftServer = new MinecraftServerContent { Ip = "", Password = "", Version = content.MinecraftServer.Version },
+        };
+    }
+
+    private static bool ShouldRevealServerIp(WeddingContent content)
+    {
+        if (!DateTimeOffset.TryParse(content.WeddingDateTime, out var weddingDate)) return false;
+        return weddingDate - DateTimeOffset.UtcNow <= TimeSpan.FromMinutes(10);
     }
 }

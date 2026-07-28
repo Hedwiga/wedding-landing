@@ -3,6 +3,7 @@ namespace WeddingLanding.Web;
 public sealed class MinecraftServerContent
 {
     public string Ip { get; init; } = "";
+    public string Password { get; init; } = "";
     public string Version { get; init; } = "";
 }
 
