@@ -8,9 +8,9 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var connectionString = configuration["BlobStorageConnectionString"]
+var connectionString = configuration["ConnectionStrings:BlobStorage"]
     ?? throw new InvalidOperationException(
-        "Set BlobStorageConnectionString with 'dotnet user-secrets set' or as an environment variable.");
+        "Set ConnectionStrings:BlobStorage with 'dotnet user-secrets set' or as an environment variable.");
 
 List<string> guestFirstNames = [];
 
