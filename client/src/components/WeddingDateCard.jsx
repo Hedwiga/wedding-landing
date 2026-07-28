@@ -7,7 +7,7 @@ import { GREEN, GOLD } from '../theme/colors';
 function formatDateParts(date, timezone, options) {
   return new Intl.DateTimeFormat('uk-UA', { ...options, timeZone: timezone })
     .formatToParts(date)
-    .filter((part) => part.type !== 'literal' || part.value === ' ')
+    .filter((part) => part.type !== 'literal' || part.value === ' ' || part.value === ':')
     .map((part) => part.value)
     .join('')
     .trim();

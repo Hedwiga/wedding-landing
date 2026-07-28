@@ -81,11 +81,13 @@ function App() {
                 weddingDateTime={guest.content.weddingDateTime}
                 weddingTimezone={guest.content.weddingTimezone}
               />
-              <MinecraftProfileCard
-                guestId={guestId}
-                initialNickname={guest.nickname}
-                initialHasSkin={guest.hasSkin}
-              />
+              {guest.attending && (
+                <MinecraftProfileCard
+                  guestId={guestId}
+                  initialNickname={guest.nickname}
+                  initialHasSkin={guest.hasSkin}
+                />
+              )}
             </>
           )}
         </Container>

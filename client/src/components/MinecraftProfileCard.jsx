@@ -60,13 +60,14 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
           Твій нікнейм у грі
         </Typography>
 
-        <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center" alignItems="stretch">
           <TextField
             size="small"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             inputProps={{ maxLength: 20 }}
             sx={{
+              flex: 1,
               input: { color: GOLD, fontSize: '0.6rem' },
               '& .MuiOutlinedInput-notchedOutline': { borderColor: `${GREEN}66` },
             }}
@@ -79,10 +80,11 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
               borderRadius: 0,
               fontSize: '0.4rem',
               px: 2,
-              py: 1.2,
+              flexShrink: 0,
               backgroundColor: GOLD,
               color: '#000',
               '&:hover': { backgroundColor: '#e8b055' },
+              '&:disabled': { backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' },
             }}
           >
             {nicknameMutation.isPending ? <CircularProgress size={12} sx={{ color: '#000' }} /> : 'Зберегти'}
