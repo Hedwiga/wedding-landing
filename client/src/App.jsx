@@ -88,12 +88,12 @@ function App() {
 
               {guest.attending && (
                 <>
+                  <DressCodeCard />
                   <MinecraftProfileCard
                     guestId={guestId}
                     initialNickname={guest.nickname}
                     initialHasSkin={guest.hasSkin}
                   />
-                  <DressCodeCard />
                 </>
               )}
 

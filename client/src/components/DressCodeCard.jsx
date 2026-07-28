@@ -100,12 +100,20 @@ export default function DressCodeCard() {
         gap: 1.5,
       }}>
         <Link
-          href="https://namemc.com/minecraft-skins/formal"
+          href="https://namemc.com/minecraft-skins/tag/formal"
           target="_blank"
           rel="noopener"
           sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: GREEN, textDecorationColor: `${GREEN}66`, '&:hover': { color: 'white' } }}
         >
-          NameMC — формальні скіни →
+          namemc.com - formal
+        </Link>
+        <Link
+          href="https://namemc.com/minecraft-skins/tag/dress"
+          target="_blank"
+          rel="noopener"
+          sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: GREEN, textDecorationColor: `${GREEN}66`, '&:hover': { color: 'white' } }}
+        >
+          namemc.com - dress
         </Link>
         <Link
           href="https://www.minecraftskins.com/search/skin/formal"
@@ -113,7 +121,7 @@ export default function DressCodeCard() {
           rel="noopener"
           sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: GREEN, textDecorationColor: `${GREEN}66`, '&:hover': { color: 'white' } }}
         >
-          The Skindex — пошук formal →
+          minecraftskins - formal
         </Link>
       </Box>
     </Paper>
