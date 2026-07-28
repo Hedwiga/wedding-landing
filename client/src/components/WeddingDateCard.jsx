@@ -80,7 +80,7 @@ const RSVP_OPTIONS = [
   { value: 'no',  label: '✘ На жаль, ні', color: '#FF6B6B' },
 ];
 
-export default function WeddingDateCard({ guestId, initialAttending, weddingDateTime, weddingTimezone }) {
+export default function WeddingDateCard({ guestId, initialAttending, weddingDateTime, weddingTimezone, nickname, hasSkin }) {
   const queryClient = useQueryClient();
   const weddingDate = useMemo(() => new Date(weddingDateTime), [weddingDateTime]);
   const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(weddingDate));
@@ -170,69 +170,78 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
         )}
 
         {/* RSVP */}
-        <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: `${GOLD}99`, textTransform: 'uppercase', letterSpacing: 1 }}>
-          Чи будеш ти на святі?
-        </Typography>
-
-        {!submitted ? (
+        {timeLeft && (
           <>
-            <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
-              {RSVP_OPTIONS.map(({ value, label, color }) => (
-                <Box
-                  key={value}
-                  onClick={() => setRsvp(value)}
-                  sx={{
-                    cursor: 'pointer',
-                    border: `2px solid ${rsvp === value ? color : 'rgba(255,255,255,0.2)'}`,
-                    backgroundColor: rsvp === value ? `${color}22` : 'transparent',
-                    px: { xs: 2, md: 3 },
-                    py: 1.5,
-                    transition: 'all 0.15s',
-                    '&:hover': { borderColor: color, backgroundColor: `${color}11` },
-                  }}
-                >
-                  <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: rsvp === value ? color : 'rgba(255,255,255,0.7)' }}>
-                    {label}
-                  </Typography>
-                </Box>
-              ))}
-            </Stack>
-
-            <Box>
-              <Button
-                variant="contained"
-                disabled={!rsvp || isPending}
-                onClick={handleSubmit}
-                sx={{
-                  borderRadius: 0,
-                  fontSize: { xs: '0.4rem', md: '0.5rem' },
-                  px: 4,
-                  py: 1.5,
-                  backgroundColor: GOLD,
-                  color: '#000',
-                  '&:hover': { backgroundColor: '#e8b055' },
-                  '&:disabled': { backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' },
-                }}
-              >
-                {isPending ? <CircularProgress size={12} sx={{ color: '#000' }} /> : 'Підтвердити'}
-              </Button>
-            </Box>
-          </>
-        ) : (
-          <Box>
-            <Typography sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: rsvp === 'yes' ? GREEN : '#FF6B6B', lineHeight: 2.5, mb: 1 }}>
-              {rsvp === 'yes'
-                ? 'Чудово! Чекаємо тебе на святі! 💚'
-                : 'Шкода, що не зможеш. Будемо сумувати! 🌸'}
+            <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: `${GOLD}99`, textTransform: 'uppercase', letterSpacing: 1 }}>
+              Чи будеш ти на святі?
             </Typography>
-            <Button
-              variant="text"
-              onClick={handleChange}
-              sx={{ fontSize: { xs: '0.35rem', md: '0.42rem' }, color: `${GOLD}66`, '&:hover': { color: GOLD }, borderRadius: 0 }}
-            >
-              Змінити відповідь
-            </Button>
-          </Box>
+
+            {!submitted ? (
+              <>
+                <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', alignItems: 'center' }}>
+                  {RSVP_OPTIONS.map(({ value, label, color }) => (
+                    <Box
+                      key={value}
+                      onClick={() => setRsvp(value)}
+                      sx={{
+                        cursor: 'pointer',
+                        border: `2px solid ${rsvp === value ? color : 'rgba(255,255,255,0.2)'}`,
+                        backgroundColor: rsvp === value ? `${color}22` : 'transparent',
+                        px: { xs: 2, md: 3 },
+                        py: 1.5,
+                        transition: 'all 0.15s',
+                        '&:hover': { borderColor: color, backgroundColor: `${color}11` },
+                      }}
+                    >
+                      <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: rsvp === value ? color : 'rgba(255,255,255,0.7)' }}>
+                        {label}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+
+                <Box>
+                  <Button
+                    variant="contained"
+                    disabled={!rsvp || isPending}
+                    onClick={handleSubmit}
+                    sx={{
+                      borderRadius: 0,
+                      fontSize: { xs: '0.4rem', md: '0.5rem' },
+                      px: 4,
+                      py: 1.5,
+                      backgroundColor: GOLD,
+                      color: '#000',
+                      '&:hover': { backgroundColor: '#e8b055' },
+                      '&:disabled': { backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' },
+                    }}
+                  >
+                    {isPending ? <CircularProgress size={12} sx={{ color: '#000' }} /> : 'Підтвердити'}
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <Box>
+                <Typography sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: rsvp === 'yes' ? GREEN : '#FF6B6B', lineHeight: 2.5, mb: 1 }}>
+                  {rsvp === 'yes'
+                    ? 'Чудово! Чекаємо тебе на святі! 💚'
+                    : 'Шкода, що не зможеш. Будемо сумувати! 🌸'}
+                </Typography>
+                {rsvp === 'yes' && (!nickname || !hasSkin) && (
+                  <Typography sx={{ fontSize: { xs: '0.4rem', md: '0.45rem' }, color: `${GOLD}99`, lineHeight: 2, mb: 1 }}>
+                    Не забудь вказати нікнейм і завантажити скін нижче 👇
+                  </Typography>
+                )}
+                <Button
+                  variant="text"
+                  onClick={handleChange}
+                  sx={{ fontSize: { xs: '0.35rem', md: '0.42rem' }, color: `${GOLD}66`, '&:hover': { color: GOLD }, borderRadius: 0 }}
+                >
+                  Змінити відповідь
+                </Button>
+              </Box>
+            )}
+          </>
         )}
 
       </Stack>

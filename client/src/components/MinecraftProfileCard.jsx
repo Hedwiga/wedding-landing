@@ -13,13 +13,19 @@ async function saveNickname({ guestId, nickname }) {
   return res.json();
 }
 
+const SKIN_ERROR_MESSAGES = {
+  TooLarge: 'Файл занадто великий (максимум 512 КБ)',
+  NotPng: 'Файл має бути у форматі PNG',
+  InvalidDimensions: 'Розмір скіна має бути 64×64 або 64×32 пікселів',
+};
+
 async function uploadSkin({ guestId, file }) {
   const formData = new FormData();
   formData.append('file', file);
   const res = await fetch(`/api/guest/${guestId}/skin`, { method: 'POST', body: formData });
   if (!res.ok) {
     const body = await res.json().catch(() => null);
-    throw new Error(body?.error ?? 'Не вдалося завантажити скін');
+    throw new Error(SKIN_ERROR_MESSAGES[body?.error] ?? 'Не вдалося завантажити скін');
   }
 }
 
@@ -58,6 +64,9 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
       <Stack spacing={2}>
         <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Твій нікнейм у грі
+        </Typography>
+        <Typography sx={{ fontSize: { xs: '0.4rem', md: '0.45rem' }, color: 'rgba(255,255,255,0.4)' }}>
+          Додай своє справжнє ім'я хоча б частиною ніку, щоб ми могли тебе впізнати
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center" alignItems="stretch">

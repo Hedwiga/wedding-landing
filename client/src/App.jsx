@@ -29,6 +29,8 @@ function App() {
 
   if (isError) return <SorryPage />;
 
+  const eventStarted = guest && Date.now() >= new Date(guest.content.weddingDateTime).getTime();
+
   return (
     <>
       <CssBaseline />
@@ -80,6 +82,8 @@ function App() {
                 initialAttending={guest.attending}
                 weddingDateTime={guest.content.weddingDateTime}
                 weddingTimezone={guest.content.weddingTimezone}
+                nickname={guest.nickname}
+                hasSkin={guest.hasSkin}
               />
 
               {guest.attending && (
@@ -90,8 +94,11 @@ function App() {
                     initialHasSkin={guest.hasSkin}
                   />
                   <DressCodeCard />
-                  <ServerCard server={guest.content.minecraftServer} />
                 </>
+              )}
+
+              {(guest.attending || eventStarted) && (
+                <ServerCard server={guest.content.minecraftServer} />
               )}
             </>
           )}
