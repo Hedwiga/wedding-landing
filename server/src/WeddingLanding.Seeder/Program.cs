@@ -12,7 +12,7 @@ var connectionString = configuration["ConnectionStrings:BlobStorage"]
     ?? throw new InvalidOperationException(
         "Set ConnectionStrings:BlobStorage with 'dotnet user-secrets set' or as an environment variable.");
 
-List<string> guestFirstNames = [];
+List<string> guestFirstNames = ["Тест"];
 
 if (guestFirstNames.Count == 0)
 {

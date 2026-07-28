@@ -62,10 +62,10 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
       }}
     >
       <Stack spacing={2}>
-        <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>
+        <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.55rem' }, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Твій нікнейм у грі
         </Typography>
-        <Typography sx={{ fontSize: { xs: '0.4rem', md: '0.45rem' }, color: 'rgba(255,255,255,0.4)' }}>
+        <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.55rem' }, color: 'rgba(255,255,255,0.4)' }}>
           Додай своє справжнє ім'я хоча б частиною ніку, щоб ми могли тебе впізнати
         </Typography>
 
@@ -87,7 +87,7 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
             onClick={() => nicknameMutation.mutate({ guestId, nickname })}
             sx={{
               borderRadius: 0,
-              fontSize: '0.4rem',
+              fontSize: '0.55rem',
               px: 2,
               flexShrink: 0,
               backgroundColor: GOLD,
@@ -126,7 +126,7 @@ export default function MinecraftProfileCard({ guestId, initialNickname, initial
           disabled={skinMutation.isPending}
           sx={{
             borderRadius: 0,
-            fontSize: '0.4rem',
+            fontSize: '0.55rem',
             color: GREEN,
             borderColor: `${GREEN}66`,
             alignSelf: 'center',

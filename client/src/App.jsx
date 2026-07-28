@@ -9,6 +9,7 @@ import DressCodeCard from './components/DressCodeCard';
 import WeddingDateCard from './components/WeddingDateCard';
 import MinecraftProfileCard from './components/MinecraftProfileCard';
 import InvitationCard from './components/InvitationCard';
+import ResourcePackCard from './components/ResourcePackCard';
 import SorryPage from './pages/SorryPage';
 import { GOLD } from './theme/colors';
 
@@ -94,6 +95,7 @@ function App() {
                     initialHasSkin={guest.hasSkin}
                   />
                   <DressCodeCard />
+                  <ResourcePackCard />
                 </>
               )}
 
