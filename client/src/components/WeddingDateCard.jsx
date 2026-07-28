@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Typography, Box, Paper, Button, Stack, CircularProgress } from '@mui/material';
 import PixelHeart from './PixelHeart';
 import { GREEN, GOLD } from '../theme/colors';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+function formatDateParts(date, timezone, options) {
+  return new Intl.DateTimeFormat('uk-UA', { ...options, timeZone: timezone })
+    .formatToParts(date)
+    .filter((part) => part.type !== 'literal' || part.value === ' ')
+    .map((part) => part.value)
+    .join('')
+    .trim();
+}
 
-// 31 July 2026, 19:00 Kyiv time (UTC+3)
-const WEDDING_DATE = new Date('2026-07-31T19:00:00+03:00');
-
-function getTimeLeft() {
-  const diff = WEDDING_DATE - Date.now();
+function getTimeLeft(weddingDate) {
+  const diff = weddingDate - Date.now();
   if (diff <= 0) return null;
   return {
     days:    Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -21,10 +25,10 @@ function getTimeLeft() {
 }
 
 async function submitRsvp({ guestId, attending }) {
-  const res = await fetch(`${API_BASE}/guest/rsvp`, {
-    method: 'POST',
+  const res = await fetch(`/api/guest/${guestId}/rsvp`, {
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: guestId, attending }),
+    body: JSON.stringify({ attending }),
   });
   if (!res.ok) throw new Error('Failed to submit RSVP');
   return res.json();
@@ -56,11 +60,15 @@ const RSVP_OPTIONS = [
   { value: 'no',  label: '✘ На жаль, ні', color: '#FF6B6B' },
 ];
 
-export default function WeddingDateCard({ guestId, initialAttending }) {
+export default function WeddingDateCard({ guestId, initialAttending, weddingDateTime, weddingTimezone }) {
   const queryClient = useQueryClient();
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft());
+  const weddingDate = useMemo(() => new Date(weddingDateTime), [weddingDateTime]);
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(weddingDate));
   const [rsvp, setRsvp] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+
+  const dateDisplay = formatDateParts(weddingDate, weddingTimezone, { day: 'numeric', month: 'long', year: 'numeric' });
+  const timeDisplay = formatDateParts(weddingDate, weddingTimezone, { hour: '2-digit', minute: '2-digit', hour12: false });
 
   // Sync pre-existing RSVP once the guest query resolves
   useEffect(() => {
@@ -70,9 +78,9 @@ export default function WeddingDateCard({ guestId, initialAttending }) {
   }, [initialAttending]);
 
   useEffect(() => {
-    const id = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
+    const id = setInterval(() => setTimeLeft(getTimeLeft(weddingDate)), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [weddingDate]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: submitRsvp,
@@ -108,10 +116,10 @@ export default function WeddingDateCard({ guestId, initialAttending }) {
           Дата та час
         </Typography>
         <Typography sx={{ fontSize: { xs: '0.8rem', md: '1rem' }, color: GOLD, lineHeight: 2 }}>
-          31 липня 2026
+          {dateDisplay}
         </Typography>
         <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.7rem' }, color: 'rgba(255,255,255,0.75)' }}>
-          19:00 за київським часом
+          {timeDisplay} за київським часом
         </Typography>
 
         {/* Countdown */}

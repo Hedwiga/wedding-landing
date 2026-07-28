@@ -1,13 +1,12 @@
 {
   "name": "wedding-landing",
   "version": "1.0.0",
-  "description": "React + Node.js fullstack app",
+  "description": "React + ASP.NET Core fullstack app",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "install:all": "npm install --prefix server && npm install --prefix client",
-    "build": "npm run build --prefix client",
-    "start": "npm run start --prefix server"
+    "dev": "concurrently \"dotnet watch run --project server/src/WeddingLanding.Web\" \"npm run dev --prefix client\"",
+    "install:all": "npm install --prefix client",
+    "build": "npm run build --prefix client"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WeddingLanding.Core/WeddingLanding.Core.csproj" />
+    <Project Path="src/WeddingLanding.Seeder/WeddingLanding.Seeder.csproj" />
+    <Project Path="src/WeddingLanding.Web/WeddingLanding.Web.csproj" />
+  </Folder>
+</Solution>

@@ -7,12 +7,12 @@ import PixelHeart from './components/PixelHeart';
 import ServerCard from './components/ServerCard';
 import DressCodeCard from './components/DressCodeCard';
 import WeddingDateCard from './components/WeddingDateCard';
+import MinecraftProfileCard from './components/MinecraftProfileCard';
+import SorryPage from './pages/SorryPage';
 import { GOLD } from './theme/colors';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
 async function fetchGuest(guestId) {
-  const res = await fetch(`${API_BASE}/guest/${guestId}`);
+  const res = await fetch(`/api/guest/${guestId}`);
   if (!res.ok) throw new Error('Guest not found');
   return res.json();
 }
@@ -20,11 +20,13 @@ async function fetchGuest(guestId) {
 function App() {
   const { guestId } = useParams();
 
-  const { data: guest, isLoading } = useQuery({
+  const { data: guest, isLoading, isError } = useQuery({
     queryKey: ['guest', guestId],
     queryFn: () => fetchGuest(guestId),
     retry: false,
   });
+
+  if (isError) return <SorryPage />;
 
   return (
     <>
@@ -56,22 +58,36 @@ function App() {
             <PixelHeart pixelSize={10} />
           </Box>
 
-          <Typography
-            variant="h3"
-            gutterBottom
-            sx={{ fontSize: { xs: '1rem', md: '1.6rem' }, color: 'white', lineHeight: 2, mb: 2 }}
-          >
-            Діма і Марічка
-          </Typography>
+          {isLoading || !guest ? (
+            <CircularProgress size={14} sx={{ color: GOLD }} />
+          ) : (
+            <>
+              <Typography
+                variant="h3"
+                gutterBottom
+                sx={{ fontSize: { xs: '1rem', md: '1.6rem' }, color: 'white', lineHeight: 2, mb: 2 }}
+              >
+                {guest.content.coupleNames}
+              </Typography>
 
-          <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.7rem' }, color: GOLD, lineHeight: 2.5, mb: 6 }}>
-            {isLoading
-              ? <CircularProgress size={14} sx={{ color: GOLD }} />
-              : `запрошують ${guest?.name ?? 'вас на весілля'}`}
-          </Typography>
-          <ServerCard />
-          <DressCodeCard />
-          <WeddingDateCard guestId={guestId} initialAttending={guest?.attending ?? null} />
+              <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.7rem' }, color: GOLD, lineHeight: 2.5, mb: 6 }}>
+                {`запрошують ${guest.firstName}`}
+              </Typography>
+              <ServerCard server={guest.content.minecraftServer} />
+              <DressCodeCard />
+              <WeddingDateCard
+                guestId={guestId}
+                initialAttending={guest.attending}
+                weddingDateTime={guest.content.weddingDateTime}
+                weddingTimezone={guest.content.weddingTimezone}
+              />
+              <MinecraftProfileCard
+                guestId={guestId}
+                initialNickname={guest.nickname}
+                initialHasSkin={guest.hasSkin}
+              />
+            </>
+          )}
         </Container>
       </Box>
     </>

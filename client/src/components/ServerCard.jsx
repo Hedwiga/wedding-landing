@@ -4,14 +4,11 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
 import { GREEN, GOLD } from '../theme/colors';
 
-export const SERVER_IP = 'play.весілля.mc';
-const SERVER_VERSION = 'Java Edition 1.21';
-
-export default function ServerCard() {
+export default function ServerCard({ server }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(SERVER_IP);
+    navigator.clipboard.writeText(server.ip);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -40,7 +37,7 @@ export default function ServerCard() {
       </Typography>
 
       <Typography sx={{ fontSize: { xs: '0.6rem', md: '0.7rem' }, color: GOLD, mb: 3, letterSpacing: 1 }}>
-        {SERVER_VERSION}
+        {server.version}
       </Typography>
 
       <Typography sx={{ fontSize: { xs: '0.45rem', md: '0.55rem' }, color: 'rgba(255,255,255,0.5)', mb: 1.5, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -60,7 +57,7 @@ export default function ServerCard() {
         }}
       >
         <Typography sx={{ fontSize: { xs: '0.6rem', md: '0.75rem' }, color: GREEN, flexGrow: 1, letterSpacing: 1 }}>
-          {SERVER_IP}
+          {server.ip}
         </Typography>
         <Tooltip title={copied ? 'Скопійовано!' : 'Копіювати'} placement="top">
           <IconButton

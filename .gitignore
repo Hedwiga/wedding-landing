@@ -4,3 +4,8 @@ server/node_modules/
 client/dist/
 .env
 *.local
+
+# .NET
+server/**/bin/
+server/**/obj/
+server/.vs/
