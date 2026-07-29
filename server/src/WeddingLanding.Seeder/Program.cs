@@ -21,11 +21,13 @@ IGuestStore store = new BlobGuestStore(new BlobServiceClient(connectionString));
 
 // await SeedAsync(store);
 // await DownloadSkinsAsync(store, "skins");
-// await DownloadAllAsync(store, "backup");
+await DownloadAllAsync(store, "backup");
+
+const string BaseUrl = "https://example.com";
 
 static async Task SeedAsync(IGuestStore store)
 {
-    List<string> guestFirstNames = ["Тест"];
+    List<string> guestFirstNames = ["Дмитра"];
 
     if (guestFirstNames.Count == 0)
     {
@@ -40,13 +42,13 @@ static async Task SeedAsync(IGuestStore store)
         var existing = existingGuests.FirstOrDefault(g => g.FirstName == firstName);
         if (existing != default)
         {
-            Console.WriteLine($"{firstName}: {existing.Link} (already added)");
+            Console.WriteLine($"{firstName}: {BaseUrl}/invite/{existing.Link} (already added)");
             continue;
         }
 
         var link = GuestLink.Generate();
         await store.CreateAsync(link, firstName!);
-        Console.WriteLine($"{firstName}: {link}");
+        Console.WriteLine($"{firstName}: {BaseUrl}/invite/{link}");
     }
 }
 
