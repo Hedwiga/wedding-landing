@@ -13,4 +13,5 @@ public sealed class WeddingContent
     public string WeddingDateTime { get; init; } = "";
     public string WeddingTimezone { get; init; } = "";
     public MinecraftServerContent MinecraftServer { get; init; } = new();
+    public string DiscordInvite { get; init; } = "";
 }

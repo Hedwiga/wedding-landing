@@ -104,6 +104,7 @@ public static class GuestEndpoints
             WeddingDateTime = content.WeddingDateTime,
             WeddingTimezone = content.WeddingTimezone,
             MinecraftServer = new MinecraftServerContent { Ip = "", Password = "", Version = content.MinecraftServer.Version },
+            DiscordInvite = content.DiscordInvite,
         };
     }
 

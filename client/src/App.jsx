@@ -9,6 +9,7 @@ import WeddingDateCard from './components/WeddingDateCard';
 import MinecraftProfileCard from './components/MinecraftProfileCard';
 import InvitationCard from './components/InvitationCard';
 import GreetingCard from './components/GreetingCard';
+import DiscordCard from './components/DiscordCard';
 import ResourcePackCard from './components/ResourcePackCard';
 import SorryPage from './pages/SorryPage';
 import { GOLD } from './theme/colors';
@@ -83,6 +84,7 @@ function App() {
                     initialNickname={guest.nickname}
                     initialHasSkin={guest.hasSkin}
                   />
+                  {guest.content.discordInvite && <DiscordCard inviteUrl={guest.content.discordInvite} />}
                   <ResourcePackCard />
                 </>
               )}
