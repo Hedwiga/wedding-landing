@@ -48,7 +48,7 @@ public sealed class BlobGuestStore : IGuestStore
         await WriteProfileAsync(link, new GuestProfile(firstName, null, null), ct);
     }
 
-    public async Task UpdateProfileAsync(string link, string? nickname, bool? attending, CancellationToken ct = default)
+    public async Task UpdateProfileAsync(string link, string? nickname, AttendingStatus? attending, CancellationToken ct = default)
     {
         var existing = await GetProfileAsync(link, ct) ?? throw new GuestNotFoundException(link);
         var updated = GuestProfileMerge.Apply(existing, nickname, attending);

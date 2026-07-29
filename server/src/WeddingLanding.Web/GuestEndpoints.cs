@@ -2,8 +2,8 @@ using WeddingLanding.Core;
 
 namespace WeddingLanding.Web;
 
-public sealed record GuestProfileResponse(string FirstName, string? Nickname, bool? Attending, bool HasSkin, WeddingContent Content);
-public sealed record RsvpRequest(bool Attending);
+public sealed record GuestProfileResponse(string FirstName, string? Nickname, AttendingStatus? Attending, bool HasSkin, WeddingContent Content);
+public sealed record RsvpRequest(AttendingStatus Attending);
 public sealed record NicknameRequest(string Nickname);
 
 public static class GuestEndpoints

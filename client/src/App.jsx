@@ -31,6 +31,7 @@ function App() {
   if (isError) return <SorryPage />;
 
   const eventStarted = guest && Date.now() >= new Date(guest.content.weddingDateTime).getTime();
+  const showsUpMaybe = guest && (guest.attending === 'Attending' || guest.attending === 'Unsure');
 
   return (
     <>
@@ -74,7 +75,7 @@ function App() {
                 hasSkin={guest.hasSkin}
               />
 
-              {guest.attending && (
+              {showsUpMaybe && (
                 <>
                   <DressCodeCard />
                   <MinecraftProfileCard
@@ -86,7 +87,7 @@ function App() {
                 </>
               )}
 
-              {(guest.attending || eventStarted) && (
+              {(showsUpMaybe || eventStarted) && (
                 <ServerCard server={guest.content.minecraftServer} />
               )}
             </>

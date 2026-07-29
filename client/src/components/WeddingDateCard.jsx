@@ -76,9 +76,13 @@ function CountdownSeparator() {
 }
 
 const RSVP_OPTIONS = [
-  { value: 'yes', label: '✔ Так, буду!',   color: GREEN },
-  { value: 'no',  label: '✘ На жаль, ні', color: '#FF6B6B' },
+  { value: 'yes',    label: '✔ Так, буду!',       color: GREEN },
+  { value: 'unsure', label: '❓ Не впевнений', color: GOLD },
+  { value: 'no',     label: '✘ На жаль, ні',     color: '#FF6B6B' },
 ];
+
+const ATTENDING_STATUS_BY_RSVP = { yes: 'Attending', no: 'NotAttending', unsure: 'Unsure' };
+const RSVP_BY_ATTENDING_STATUS = { Attending: 'yes', NotAttending: 'no', Unsure: 'unsure' };
 
 export default function WeddingDateCard({ guestId, initialAttending, weddingDateTime, weddingTimezone, nickname, hasSkin }) {
   const queryClient = useQueryClient();
@@ -93,7 +97,7 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
   // Sync pre-existing RSVP once the guest query resolves
   useEffect(() => {
     if (initialAttending === null || initialAttending === undefined) return;
-    setRsvp(initialAttending ? 'yes' : 'no');
+    setRsvp(RSVP_BY_ATTENDING_STATUS[initialAttending]);
     setSubmitted(true);
   }, [initialAttending]);
 
@@ -112,7 +116,7 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
   });
 
   const handleSubmit = () => {
-    if (rsvp) mutate({ guestId, attending: rsvp === 'yes' });
+    if (rsvp) mutate({ guestId, attending: ATTENDING_STATUS_BY_RSVP[rsvp] });
   };
 
   const handleChange = () => setSubmitted(false);
@@ -222,12 +226,14 @@ export default function WeddingDateCard({ guestId, initialAttending, weddingDate
               </>
             ) : (
               <Box>
-                <Typography sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: rsvp === 'yes' ? GREEN : '#FF6B6B', lineHeight: 2.5, mb: 1 }}>
+                <Typography sx={{ fontSize: { xs: '0.5rem', md: '0.6rem' }, color: rsvp === 'yes' ? GREEN : rsvp === 'unsure' ? GOLD : '#FF6B6B', lineHeight: 2.5, mb: 1 }}>
                   {rsvp === 'yes'
                     ? 'Чудово! Чекаємо тебе на святі! 💚'
+                    : rsvp === 'unsure'
+                    ? 'Добре, дай знати пізніше! А поки що можеш заповнити інфо нижче 👇'
                     : 'Шкода, що не зможеш. Будемо сумувати! 🌸'}
                 </Typography>
-                {rsvp === 'yes' && (!nickname || !hasSkin) && (
+                {(rsvp === 'yes' || rsvp === 'unsure') && (!nickname || !hasSkin) && (
                   <Typography sx={{ fontSize: { xs: '0.55rem', md: '0.55rem' }, color: `${GOLD}99`, lineHeight: 2, mb: 1 }}>
                     Не забудь вказати нікнейм і завантажити скін нижче 👇
                   </Typography>
