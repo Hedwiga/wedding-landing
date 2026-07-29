@@ -19,7 +19,7 @@ var connectionString = configuration["ConnectionStrings:BlobStorage"]
 
 IGuestStore store = new BlobGuestStore(new BlobServiceClient(connectionString));
 
-//await SeedAsync(store);
+// await SeedAsync(store);
 // await DownloadSkinsAsync(store, "skins");
 // await DownloadAllAsync(store, "backup");
 
@@ -66,7 +66,7 @@ static async Task DownloadSkinsAsync(IGuestStore store, string outputDirectory)
         var profile = await store.GetProfileAsync(link);
         var nickname = profile?.Nickname ?? "no-nickname";
 
-        var fileName = $"{Sanitize(nickname)}-{Sanitize(firstName)}.png";
+        var fileName = $"{Sanitize(nickname)}.png";
         var filePath = Path.Combine(outputDirectory, fileName);
 
         await using var skinStream = await store.GetSkinAsync(link);
