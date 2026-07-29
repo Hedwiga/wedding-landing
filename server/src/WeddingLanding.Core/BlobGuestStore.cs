@@ -25,6 +25,23 @@ public sealed class BlobGuestStore : IGuestStore
         return response.Value.Content.ToObjectFromJson<GuestProfile>();
     }
 
+    public async Task<IReadOnlyList<(string Link, string FirstName)>> ListAsync(CancellationToken ct = default)
+    {
+        await _container.CreateIfNotExistsAsync(cancellationToken: ct);
+
+        var guests = new List<(string Link, string FirstName)>();
+        await foreach (var blobItem in _container.GetBlobsAsync(cancellationToken: ct))
+        {
+            if (!blobItem.Name.EndsWith($"/{ProfileBlobName}")) continue;
+
+            var link = blobItem.Name[..^(ProfileBlobName.Length + 1)];
+            var profile = await GetProfileAsync(link, ct);
+            if (profile is not null) guests.Add((link, profile.FirstName));
+        }
+
+        return guests;
+    }
+
     public async Task CreateAsync(string link, string firstName, CancellationToken ct = default)
     {
         await _container.CreateIfNotExistsAsync(cancellationToken: ct);
