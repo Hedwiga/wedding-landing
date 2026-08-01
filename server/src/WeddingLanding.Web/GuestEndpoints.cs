@@ -110,7 +110,6 @@ public static class GuestEndpoints
 
     private static bool ShouldRevealServerIp(WeddingContent content)
     {
-        if (!DateTimeOffset.TryParse(content.WeddingDateTime, out var weddingDate)) return false;
-        return weddingDate - DateTimeOffset.UtcNow <= TimeSpan.FromMinutes(10);
+        return false;
     }
 }
