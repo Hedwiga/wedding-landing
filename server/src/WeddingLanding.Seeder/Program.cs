@@ -17,11 +17,13 @@ var connectionString = configuration["ConnectionStrings:BlobStorage"]
     ?? throw new InvalidOperationException(
         "Set ConnectionStrings:BlobStorage with 'dotnet user-secrets set' or as an environment variable.");
 
-IGuestStore store = new BlobGuestStore(new BlobServiceClient(connectionString));
+var blobServiceClient = new BlobServiceClient(connectionString);
+IGuestStore store = new BlobGuestStore(blobServiceClient);
 
 // await SeedAsync(store);
 // await DownloadSkinsAsync(store, "skins");
-await DownloadAllAsync(store, "backup");
+await PrintSkinLinksAsync(store, blobServiceClient.GetBlobContainerClient("guests"));
+// await DownloadAllAsync(store, "backup");
 
 const string BaseUrl = "https://example.com";
 
@@ -81,6 +83,25 @@ static async Task DownloadSkinsAsync(IGuestStore store, string outputDirectory)
         await skinStream.CopyToAsync(fileStream);
 
         Console.WriteLine($"{fileName}");
+    }
+}
+
+static async Task PrintSkinLinksAsync(IGuestStore store, BlobContainerClient container)
+{
+    var guests = await store.ListAsync();
+
+    foreach (var (link, firstName) in guests)
+    {
+        if (!await store.HasSkinAsync(link))
+        {
+            continue;
+        }
+
+        var profile = await store.GetProfileAsync(link);
+        var nickname = profile?.Nickname ?? firstName;
+
+        var blob = container.GetBlobClient($"{link}/skin.png");
+        Console.WriteLine($"{nickname}: {blob.Uri}");
     }
 }
 
